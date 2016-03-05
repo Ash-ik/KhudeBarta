@@ -1,0 +1,15 @@
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@+id/delete_messages"
+        android:orderInCategory="100"
+        android:title="Delete messages"
+        app:showAsAction="never"/>
+    <item android:id="@+id/call"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:icon="@mipmap/call_button"
+        android:title="@string/call_button"
+        tools:ignore="AppCompatResource" />
+</menu>

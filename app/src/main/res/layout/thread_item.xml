@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.06"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageSender"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_weight="0"
+            android:scaleType="fitXY"
+            android:src="@mipmap/contact_image" />
+        <!--android:background="#0097A7"
+        android:src="@drawable/contact_image"-->
+
+        <LinearLayout
+            android:id="@+id/details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textContactName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Contact Name"
+                    android:textColor="#000000"
+                    android:typeface="normal"
+                    android:textSize="18sp"
+                    android:linksClickable="false" />
+
+                <TextView
+                    android:id="@+id/textDraft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.010"
+                    android:paddingLeft="15sp"
+                    android:paddingTop="3sp"
+                    android:text="Small Text"
+                    android:textAlignment="textStart"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#6D6D6D"
+                    android:textSize="14sp"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/hiddentextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="0sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:layout_weight="1"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="Small Text"
+                    android:typeface="normal"
+                    android:textColor="#626262"
+                    android:textSize="14sp"
+                    android:textColorLink="@android:color/holo_blue_light"
+                    android:linksClickable="true"
+                    android:autoLink="all"
+                    />
+
+                <TextView
+                    android:id="@+id/textTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="right"
+                    android:text="time"
+                    android:typeface="normal"
+                    android:textColor="#626262" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

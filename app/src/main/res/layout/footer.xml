@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+    <LinearLayout android:orientation="horizontal" android:gravity="center" android:layout_height="wrap_content" android:layout_width="match_parent" xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView android:layout_height="32dp" android:layout_width="0dp" android:src="@mipmap/ic_smiley" android:contentDescription="@string/button_description" android:layout_weight="0.15" android:id="@+id/emoticons_button"/>
+
+    <EditText android:layout_height="wrap_content" android:layout_width="0dp" android:layout_weight="0.85" android:id="@+id/chat_content" android:inputType="textMultiLine|textNoSuggestions" android:hint="@string/chat_hint"/>
+
+    <Button android:layout_height="wrap_content" android:layout_width="0dp" android:layout_weight="0.2" android:id="@+id/post_button" android:background="@mipmap/send_black" android:padding="4dp"/>
+
+</LinearLayout>

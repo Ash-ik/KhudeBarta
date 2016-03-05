@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.piyalshuvro.khudebarta.Settings">
+    <item android:id="@+id/close_multiple_msg_delete"
+        android:orderInCategory="2"
+        app:showAsAction="always"
+        android:icon="@mipmap/close"
+        android:title="@string/call_button" />
+    <item android:id="@+id/delete"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:icon="@mipmap/delete_button"
+        android:title="Delete Messages" />
+</menu>

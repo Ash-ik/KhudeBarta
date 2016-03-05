@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/List_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context="com.example.piyalshuvro.khudebarta.compose_msg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+        <com.krishna.CustomMultiAutoCompleteTextView
+            android:id="@+id/editText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="প্রাপকঃ"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="normal"></com.krishna.CustomMultiAutoCompleteTextView>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/compose_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/editText"
+        android:layout_weight="1" />
+
+    <View
+        android:id="@+id/innerLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0"
+        android:background="#9E9E9E" />
+
+    <TextView
+        android:id="@+id/character_count_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="(1) 0/158"
+        android:textColor="#212121"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+        <include
+            android:id="@+id/footer_layout"
+            layout="@layout/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/footer_for_emoticons"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/keyboard_height"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

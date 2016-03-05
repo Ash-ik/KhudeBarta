@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/subjectEmail"
+        android:hint="Subject:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="#191919"
+        android:textColorHint="#AEAEAE"/>
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/Email_validator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#CC0000"/>
+    <EditText
+        android:id="@+id/Body"
+        android:hint="Write your thoughts..."
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:textColor="#191919"
+        android:textColorHint="#AEAEAE"/>
+</LinearLayout>

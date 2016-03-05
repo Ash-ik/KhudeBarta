@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/delete"
+        android:title="Delete Conversation" />
+    <item
+        android:id="@+id/add_to_contact"
+        android:title="Add number to Contact" />
+</menu>

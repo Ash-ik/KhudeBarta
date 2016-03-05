@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Home">
+
+    <item
+        android:id="@+id/settings"
+        android:orderInCategory="100"
+        android:title="Settings"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/help"
+        android:orderInCategory="200"
+        android:title="Help"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/contact_with_us"
+        android:orderInCategory="300"
+        android:title="Contact with us"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/about_us"
+        android:orderInCategory="400"
+        android:title="About us"
+        app:showAsAction="never"/>
+
+
+
+</menu>
