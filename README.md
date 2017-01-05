@@ -6,3 +6,27 @@ KhudeBarta is a P2P app. Both the sender and receiver must have this app to comm
 
 ##Pre-requisites
 * Android 4.1 or higher
+
+#App design and how to use
+Simple yet elegent UI with message thread    |  Sender name and number suggestions    | A set of emoticons with keyboard
+:-------------------------:|:-------------------------:|:-------------------------:
+![screenshot_2017-01-05-10-09-23](https://cloud.githubusercontent.com/assets/13817511/21696155/ee3af9c4-d3b6-11e6-9709-f985031d142e.jpeg)  |  ![screenshot_2017-01-05-10-05-43](https://cloud.githubusercontent.com/assets/13817511/21696152/ee37f094-d3b6-11e6-90b3-0ba924a15a8f.jpeg)    |    ![screenshot_2017-01-05-10-06-08](https://cloud.githubusercontent.com/assets/13817511/21696509/9794f320-d3b8-11e6-93e0-9d3470013d96.jpeg)
+
+
+</br>
+</br>
+</br>
+
+
+Turn on Bangla Parser from settings    |  Enjoy Typing bangla from any keyboard
+:-------------------------:|:-------------------------:
+![screenshot_2017-01-05-10-08-37](https://cloud.githubusercontent.com/assets/13817511/21696154/ee394e1c-d3b6-11e6-9420-b80625deee24.jpeg)  | ![screenshot_2017-01-05-10-09-11](https://cloud.githubusercontent.com/assets/13817511/21696153/ee387302-d3b6-11e6-8df4-8ec2805686aa.jpeg)
+
+#Achievements
+* Took 4th place in IUT 5th Inter University Project Showcasing Contest,2015
+* Special appreciation from honourable Judge and audience in SUST CSE Carnival,2015
+
+
+#Future Plan
+ This app is currently Under construction to make the features more easy and efficient.Keep the patience with us.
+ Any type of suggestions are welcome.
