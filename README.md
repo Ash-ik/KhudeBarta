@@ -22,6 +22,10 @@ Turn on Bangla Parser from settings    |  Enjoy Typing bangla from any keyboard
 :-------------------------:|:-------------------------:
 ![screenshot_2017-01-05-10-08-37](https://cloud.githubusercontent.com/assets/13817511/21696154/ee394e1c-d3b6-11e6-9420-b80625deee24.jpeg)  | ![screenshot_2017-01-05-10-09-11](https://cloud.githubusercontent.com/assets/13817511/21696153/ee387302-d3b6-11e6-8df4-8ec2805686aa.jpeg)
 
+
+#Developer Story
+It was late summer,an national app development contest was knocking at our door,but i had almost zero knowledge about android app development.But me and my two friends decided to do it anyway.Next 6 days,we worked almost 16 hour per days and finally when the contest day came we saw that many people loved our work.They were listening to us eagerly and appreciated our work for easing human life.We won the 4th position unexpectedly.This was the biggest event of my life.This was the moment when i decided to take android app development very seriously. See,no dream is too big,no dreamer is too small :)
+
 #Achievements
 * Took 4th place in IUT 5th Inter University Project Showcasing Contest,2015
 * Special appreciation from honourable Judge and audience in SUST CSE Carnival,2015
