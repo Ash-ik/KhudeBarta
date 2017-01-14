@@ -27,7 +27,7 @@ Turn on Bangla Parser from settings    |  Enjoy Typing bangla from any keyboard
 It was late summer,an national app development contest was knocking at our door,but i had almost zero knowledge about android app development.But me and my two friends decided to do it anyway.Next 6 days,we worked almost 16 hour per days and finally when the contest day came we saw that many people loved our work.They were listening to us eagerly and appreciated our work for easing human life.We won the 4th position unexpectedly.This was the biggest event of my life.This was the moment when i decided to take android app development very seriously. See,no dream is too big,no dreamer is too small :)
 
 #Achievements
-* Took 4th place in IUT 5th Inter University Project Showcasing Contest,2015
+* Took 4th place in IUT 7th National ICT Fest,2015 in Project Showcasing Category
 * Special appreciation from honourable Judge and audience in SUST CSE Carnival,2015
 
 
