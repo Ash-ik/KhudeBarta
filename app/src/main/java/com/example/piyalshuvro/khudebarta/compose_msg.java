@@ -3,13 +3,6 @@ package com.example.piyalshuvro.khudebarta;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-
-import com.emoticons.EmoticonsGridAdapter;
-import com.emoticons.EmoticonsPagerAdapter;
-import com.krishna.ContactPickerAdapter;
-import com.krishna.CustomMultiAutoCompleteTextView;
-import com.krishna.SmsUtil;
-
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,7 +17,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -34,9 +26,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -48,25 +44,30 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Scroller;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.emoticons.EmoticonsGridAdapter;
+import com.emoticons.EmoticonsPagerAdapter;
+import com.onegravity.contactpicker.contact.Contact;
+import com.onegravity.contactpicker.contact.ContactDescription;
+import com.onegravity.contactpicker.contact.ContactSortOrder;
+import com.onegravity.contactpicker.core.ContactPickerActivity;
+import com.onegravity.contactpicker.group.Group;
+import com.onegravity.contactpicker.picture.ContactPictureType;
+
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
+import java.util.List;
 import java.util.StringTokenizer;
 
 
@@ -74,23 +75,12 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
 
     //Variables For emoticons
     private static final int NO_OF_EMOTICONS = 54;
-    private View popUpView;
-    private LinearLayout emoticonsCover;
-    private PopupWindow popupWindow;
-    private int keyboardHeight;
-    private boolean isKeyBoardVisible;
-    private Bitmap[] emoticons;
-    private LinearLayout parentLayout;
+    private static int REQUEST_CONTACT = 4908;
     EditText content;
     Boolean emoIsEntering=false,FromNotification=false;
     Button postButton;
     String[] emoText=new String[1000];
     Boolean[] hasEmo=new Boolean[1000];
-    
-    
-    
-    
-    private CustomMultiAutoCompleteTextView phoneNum;
     TextView mTextView;
     int flag_edit = 0;
     String englishText = "";
@@ -101,13 +91,29 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
     boolean status;
     String result = "";
     BroadcastReceiver mMessageReceiver;
+    List<Contact> contacts;
+    List<Group> mGroups;
+    Button addMoreContantsButton;
+    /**
+     * Checking keyboard height and keyboard visibility
+     */
+    int previousHeightDiffrence = 0;
+    private View popUpView;
+    private LinearLayout emoticonsCover;
+    private PopupWindow popupWindow;
+    private int keyboardHeight;
+    private boolean isKeyBoardVisible;
+    private Bitmap[] emoticons;
+    private LinearLayout parentLayout;
+    //    private CustomMultiAutoCompleteTextView phoneNum;
+    private EditText phoneNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose_msg);
 
-
+        addMoreContantsButton = (Button) findViewById(R.id.addMoreContacts);
 
         for(int x=0;x<1000;x++)
         {
@@ -142,12 +148,25 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
                 mMessageReceiver, new IntentFilter("SMSintent"));
 
 
-        phoneNum = (CustomMultiAutoCompleteTextView)
+        phoneNum = (EditText)
                 findViewById(R.id.editText);
-        ContactPickerAdapter contactPickerAdapter = new ContactPickerAdapter(this,
-                android.R.layout.simple_list_item_2, SmsUtil.getContacts(
-                this, false));
-        phoneNum.setAdapter(contactPickerAdapter);
+//        ContactPickerAdapter contactPickerAdapter = new ContactPickerAdapter(this,
+//                android.R.layout.simple_list_item_2, SmsUtil.getContacts(
+//                this, false));
+//        phoneNum.setAdapter(contactPickerAdapter);
+        addMoreContantsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ContactPickerActivity.class)
+                        .putExtra(ContactPickerActivity.EXTRA_THEME, R.style.ContactPicker_Theme_Light)
+                        .putExtra(ContactPickerActivity.EXTRA_CONTACT_BADGE_TYPE, ContactPictureType.ROUND.name())
+                        .putExtra(ContactPickerActivity.EXTRA_SHOW_CHECK_ALL, true)
+                        .putExtra(ContactPickerActivity.EXTRA_CONTACT_DESCRIPTION, ContactDescription.ADDRESS.name())
+                        .putExtra(ContactPickerActivity.EXTRA_CONTACT_DESCRIPTION_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                        .putExtra(ContactPickerActivity.EXTRA_CONTACT_SORT_ORDER, ContactSortOrder.AUTOMATIC.name());
+                startActivityForResult(intent, REQUEST_CONTACT);
+            }
+        });
         phoneNum.addTextChangedListener(new TextWatcher() {
             DBadapter dBadapter = new DBadapter(getApplicationContext());
 
@@ -158,20 +177,21 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int len = phoneNum.getNumberCount();
+                int len = contacts.size();
                 if (len != 0) {
-                    String[] x = phoneNum.getAllName();
-                    String[] y = phoneNum.getAllNum();
+                    Contact contact = contacts.get(0);
+                    String x = contact.getDisplayName();
+                    String y = contact.getPhone(0);
                     String temp = "";
                     if (len == 1) {
-                        if (x[0].equals(y[0]))
-                            setTitle(Html.fromHtml("<font color='#FFFFFF' size='5'><b>" + dBadapter.ProcessNumber(x[0]) + "</b></font>"));
+                        if (x.equals(y))
+                            setTitle(Html.fromHtml("<font color='#FFFFFF' size='5'><b>" + dBadapter.ProcessNumber(x) + "</b></font>"));
                         else {
-                            setTitle(Html.fromHtml("<font color='#FFFFFF' size='5'>" + x[0] + "</font>"));
-                            getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF' size='5'>" + dBadapter.ProcessNumber(y[0]) + "</font>"));
+                            setTitle(Html.fromHtml("<font color='#FFFFFF' size='5'>" + x + "</font>"));
+                            getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF' size='5'>" + dBadapter.ProcessNumber(y) + "</font>"));
                         }
-                        String contactID = dBadapter.getContactIdFromNumber(getApplicationContext(), y[0]);
-                        if (contactID.equalsIgnoreCase(y[0]) == false) {
+                        String contactID = dBadapter.getContactIdFromNumber(getApplicationContext(), y);
+                        if (contactID.equalsIgnoreCase(y) == false) {
                             Bitmap bitmap = dBadapter.getImageBitmap(contactID);
                             if (bitmap != null) {
                                 Drawable d = new BitmapDrawable(getResources(), bitmap);
@@ -179,11 +199,13 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
                             } else
                                 getSupportActionBar().setHomeAsUpIndicator(R.mipmap.circle_contact_image_white);
                         }
+
+                        //}
                     } else if (len > 1) {
                         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.circle_contact_image_white);
                         getSupportActionBar().setSubtitle("");
-                        if (len == 2) temp = x[0] + " and 1 other";
-                        else if (len > 2) temp = x[0] + " and " + (len - 1) + " others";
+                        if (len == 2) temp = x + " and 1 other";
+                        else if (len > 2) temp = x + " and " + (len - 1) + " others";
                         setTitle(Html.fromHtml("<font color='#FFFFFF'>" + temp + "</font>"));
                     }
                     if (content.length() != 0)
@@ -229,7 +251,7 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
 
                 if (!popupWindow.isShowing()) {
 
-                    popupWindow.setHeight((int) (keyboardHeight));
+                    popupWindow.setHeight(keyboardHeight);
 
                     if (isKeyBoardVisible) {
                         emoticonsCover.setVisibility(LinearLayout.GONE);
@@ -249,7 +271,7 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
         enablePopUpView();
         checkKeyboardHeight(parentLayout);
         enableFooterView();
-        
+
 
 
         mTextView = (TextView) findViewById(R.id.character_count_textview);
@@ -304,7 +326,7 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
-                    if (phoneNum.getNumberCount() != 0)
+                    if (contacts.size() != 0)
                         postButton.setBackgroundResource(R.mipmap.send_blue);
                     else
                         postButton.setBackgroundResource(R.mipmap.send_black);
@@ -359,7 +381,7 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!content.getText().toString().isEmpty() && phoneNum.getNumberCount() != 0) {
+                if (!content.getText().toString().isEmpty() && contacts.size() != 0) {
 
 
                     //1,6,11,14
@@ -403,7 +425,13 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
                     String finalMsg = finaldecompresString.substring(0, (finaldecompresString.length() - 2));
 
                     DBadapter db = new DBadapter(getApplicationContext());
-                    String[] num = phoneNum.getAllNum();
+                    String[] num = new String[contacts.size()];
+                    int xx = 0;
+                    for (Contact contact : contacts) {
+                        num[xx] = contact.getPhone(0);
+                        Log.d("Contact To send Message", num[xx]);
+                        xx++;
+                    }
                     for (int k = 0; k < num.length; k++) {
                         num[k] = db.ProcessNumber(num[k]);
 
@@ -440,18 +468,18 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
                         }
                     }
                     String sendNumDetails = num[0];
-                    for (int p = 1; p < phoneNum.getNumberCount(); p++)
+                    for (int p = 1; p < contacts.size(); p++)
                         sendNumDetails = sendNumDetails + "," + num[p];
 
 
                     content.setText("");
                     finish();
 
-                    if (phoneNum.getNumberCount() == 1) {
+                    if (contacts.size() == 1) {
                         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
                         intent.putExtra("Number", num[0]);
                         startActivity(intent);
-                    } else if (phoneNum.getNumberCount() > 1) {
+                    } else if (contacts.size() > 1) {
                         Intent intent = new Intent(getApplicationContext(), Home.class);
                         startActivity(intent);
                     }
@@ -477,10 +505,10 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
     }
 
     public void onBackPressed() {
-        if (content.length() != 0 && phoneNum.getNumberCount() == 0)
+        if (content.length() != 0 && contacts.size() == 0)
             showDiscardMessageWarning();
         else {
-            if (content.length() != 0 && phoneNum.getNumberCount() != 0)
+            if (content.length() != 0 && contacts.size() != 0)
                 saveAsDraft();
 
             finish();
@@ -570,8 +598,14 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
 
     private void saveAsDraft() {
         String stringToSave = content.getText().toString();
-        String[] recipentName = phoneNum.getAllName();
-        String[] recipentNum = phoneNum.getAllNum();
+        String[] recipentName = new String[contacts.size()];
+        String[] recipentNum = new String[contacts.size()];
+        int xx = 0;
+        for (Contact contact : contacts) {
+            recipentName[xx] = contact.getDisplayName();
+            recipentNum[xx] = contact.getPhone(0);
+            xx++;
+        }
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
@@ -582,7 +616,7 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         DBadapter db = new DBadapter(getApplicationContext());
-        for (int i = 0; i < phoneNum.getNumberCount(); i++) {
+        for (int i = 0; i < contacts.size(); i++) {
             recipentNum[i] = db.ProcessNumber(recipentNum[i]);
 
             if (db.HasDraft(recipentNum[i]) == true)
@@ -596,6 +630,9 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
         }
         Toast.makeText(getApplicationContext(), "Saved as draft", Toast.LENGTH_SHORT).show();
     }
+
+
+    //Emoticons functions
 
     private void showDiscardMessageWarning() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(compose_msg.this);
@@ -623,17 +660,6 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
         alertDialog.show();
     }
 
-
-
-
-
-
-    //Emoticons functions
-
-
-
-
-
     /**
      * Overriding onKeyDown for dismissing keyboard on key down
      */
@@ -647,10 +673,6 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
         }
     }
 
-    /**
-     * Checking keyboard height and keyboard visibility
-     */
-    int previousHeightDiffrence = 0;
     private void checkKeyboardHeight(final View parentLayout) {
 
         parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -725,7 +747,7 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
 
         // Creating a pop window for emoticons keyboard
         popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT,
-                (int) keyboardHeight, false);
+                keyboardHeight, false);
 
         Button backSpace = (Button) popUpView.findViewById(R.id.back);
         backSpace.setOnClickListener(new View.OnClickListener() {
@@ -822,4 +844,71 @@ public class compose_msg extends ActionBarActivity implements EmoticonsGridAdapt
         hasEmo[cursorPosition]=true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CONTACT && resultCode == Activity.RESULT_OK && data != null &&
+                (data.hasExtra(ContactPickerActivity.RESULT_GROUP_DATA) ||
+                        data.hasExtra(ContactPickerActivity.RESULT_CONTACT_DATA))) {
+
+            // we got a result from the contact picker --> show the picked contacts
+            mGroups = (List<Group>) data.getSerializableExtra(ContactPickerActivity.RESULT_GROUP_DATA);
+            contacts = (List<Contact>) data.getSerializableExtra(ContactPickerActivity.RESULT_CONTACT_DATA);
+            populateContactList(mGroups, contacts);
+        }
+    }
+
+    private void populateContactList(List<Group> groups, List<Contact> contacts) {
+        // we got a result from the contact picker --> show the picked contacts
+        SpannableStringBuilder result = new SpannableStringBuilder();
+        try {
+            if (groups != null && !groups.isEmpty()) {
+                phoneNum.setClickable(true);
+                // result.append("GROUPS\n");
+                for (Group group : groups) {
+                    Log.d("Contact Info", group.toString());
+                    for (Contact contact : group.getContacts()) {
+                        Log.d("Contact Info", contact.getDisplayName());
+                        Log.d("Contact Info", contact.getPhone(0));
+
+                        final SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(contact.getDisplayName());
+                        spannableStringBuilder.setSpan(new ClickableSpan() {
+                            @Override
+                            public void onClick(View widget) {
+                                spannableStringBuilder.removeSpan(this);    // This will delete this clickable span
+                            }
+                        }, 0, contact.getDisplayName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        result.append(spannableStringBuilder);
+                        phoneNum.setMovementMethod(LinkMovementMethod.getInstance());
+
+                        //result.append(contact.getDisplayName()+", ");
+                    }
+                }
+            }
+            if (contacts != null && !contacts.isEmpty()) {
+                //result.append("CONTACTS\n");
+                phoneNum.setClickable(true);
+                for (Contact contact : contacts) {
+                    Log.d("Contact Info", contact.getDisplayName());
+                    Log.d("Contact Info", contact.getPhone(0));
+
+                    final SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(contact.getDisplayName());
+                    spannableStringBuilder.setSpan(new ClickableSpan() {
+                        @Override
+                        public void onClick(View widget) {
+                            phoneNum.setText(phoneNum.getText().replace(phoneNum.getSelectionStart(), phoneNum.getSelectionEnd(), ""));
+                            spannableStringBuilder.removeSpan(widget);    // This will delete this clickable span
+                        }
+                    }, 0, contact.getDisplayName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    result.append(spannableStringBuilder);
+                    phoneNum.setMovementMethod(LinkMovementMethod.getInstance());
+
+//                    result.append(contact.getDisplayName()+", ");
+                }
+            }
+        } catch (Exception e) {
+            result.append(e.getMessage());
+        }
+
+        phoneNum.setText(result);
+    }
 }

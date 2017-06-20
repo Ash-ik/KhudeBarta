@@ -31,17 +31,15 @@ import com.squareup.picasso.Transformation;
 import java.util.List;
 
 public class CustomListView extends ArrayAdapter<String[]> {
-    private List<String[]> msg;
-    private Activity context;
     TimeFormatting time;
-
-
     Transformation transformation = new RoundedTransformationBuilder()
             .borderColor(Color.GREEN)
             .borderWidthDp(3)
             .cornerRadiusDp(30)
             .oval(false)
             .build();
+    private List<String[]> msg;
+    private Activity context;
 
 
     public CustomListView(Activity context, List<String[]> msg) {
@@ -121,10 +119,6 @@ public class CustomListView extends ArrayAdapter<String[]> {
                 Glide
                         .with(context)
                         .load(uri)
-                        .asBitmap()
-                        .transform(new CircleTransform(context))
-                        .thumbnail(.1f)
-                        .override(200,200)
                         .centerCrop()
                         .into(imageView);
             }
@@ -133,10 +127,8 @@ public class CustomListView extends ArrayAdapter<String[]> {
                 Glide
                         .with(context)
                         .load(R.mipmap.contact_image)
-                        .asBitmap()
                         .transform(new CircleTransform(context))
                         .thumbnail(.1f)
-                        .override(200,200)
                         .centerCrop()
                         .into(imageView);
             }
@@ -147,10 +139,8 @@ public class CustomListView extends ArrayAdapter<String[]> {
             Glide
                     .with(context)
                     .load(R.mipmap.contact_image)
-                    .asBitmap()
                     .transform(new CircleTransform(context))
                     .thumbnail(.1f)
-                    .override(200,200)
                     .centerCrop()
                     .into(imageView);
         }
@@ -196,10 +186,6 @@ public class CustomListView extends ArrayAdapter<String[]> {
             super(context);
         }
 
-        @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-            return circleCrop(pool, toTransform);
-        }
-
         private static Bitmap circleCrop(BitmapPool pool, Bitmap source) {
             if (source == null) return null;
 
@@ -222,6 +208,11 @@ public class CustomListView extends ArrayAdapter<String[]> {
             float r = size / 2f;
             canvas.drawCircle(r, r, r, paint);
             return result;
+        }
+
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            return circleCrop(pool, toTransform);
         }
 
         @Override public String getId() {
